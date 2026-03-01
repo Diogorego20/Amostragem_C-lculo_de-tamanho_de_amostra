@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Amostragem I - Seção 8 e Cálculo de Tamanho de Amostra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #007bff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .metadata {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+        
+        .metadata p {
+            margin: 5px 0;
+        }
+        
+        .metadata strong {
+            color: #007bff;
+        }
+        
+        h2 {
+            color: #007bff;
+            border-left: 5px solid #007bff;
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #0056b3;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .section.success {
+            border-left-color: #28a745;
+        }
+        
+        .section.warning {
+            border-left-color: #ffc107;
+        }
+        
+        .section.danger {
+            border-left-color: #dc3545;
+        }
+        
+        .section.info {
+            border-left-color: #17a2b8;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .formula {
+            background: #e7f3ff;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .result {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .result strong {
+            color: #155724;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .reference {
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            border-top: 2px solid #ddd;
+            padding-top: 20px;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .page-break {
+            page-break-after: always;
+            margin: 40px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .badge-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .badge-warning {
+            background: #ffc107;
+            color: black;
+        }
+        
+        .badge-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABEÇALHO -->
+        <header>
+            <h1>Resolução Lista Tamanho da Amostra</h1>
+            <p class="subtitle">Cálculo de Tamanho de Amostra e Amostragem Sistemática</p>
+            
+            <div class="metadata">
+                <p><strong>Aluno:</strong> Diogo da Silva Rego</p>
+                <p><strong>Matrícula:</strong> 20240045381</p>
+                <p><strong>Disciplina:</strong> 1108202 - AMOSTRAGEM I</p>
+                <p><strong>Professor:</strong> Hemílio Fernandes Campos Coêlho</p>
+                <p><strong>Instituição:</strong> UFPB - Centro de Ciências Exatas e da Natureza</p>
+                <p><strong>Data de Geração:</strong> 01 de Março de 2026</p>
+            </div>
+        </header>
+
+        <!-- SEÇÃO 1: INTRODUÇÃO -->
+        <h2>1. Introdução</h2>
+        <p>
+            Estas resoluções apresentam as soluções dos exercícios da Lista de Cálculo de Tamanho de Amostra 
+            e da Seção 8 do livro "Amostragem com R" (Amostragem Sistemática), 
+            integrando a teoria apresentada nas Aulas 08 e 09 da disciplina Amostragem I.
+        </p>
+        <p>
+            A amostragem sistemática (AS) é um método que oferece vantagens significativas em termos de 
+            precisão e facilidade de implementação quando comparada à amostragem aleatória simples (AAS), 
+            especialmente quando a população possui uma ordenação natural que captura a variabilidade do fenômeno.
+        </p>
+
+        <!-- SEÇÃO 2: AMOSTRAGEM SISTEMÁTICA -->
+        <h2>2. Amostragem Sistemática (Seção 8)</h2>
+
+        <!-- Exercício 8.1 -->
+        <div class="section success">
+            <h3>Exercício 8.1: Identificação de Amostras Possíveis</h3>
+            <p><strong>Enunciado:</strong> Identifique as outras 4 amostras possíveis referidas no Exemplo 8.2 (K=5).</p>
+            
+            <h4>Solução:</h4>
+            <p>
+                Na amostragem sistemática com intervalo de seleção K, existem exatamente K amostras possíveis, 
+                correspondentes às K partidas aleatórias (r = 1, 2, ..., K).
+            </p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Partida (r)</th>
+                        <th>Unidades Selecionadas</th>
+                        <th>Tamanho (n)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>r = 1</td>
+                        <td>1, 6, 11, 16, 21, 26, 31, 36, 41, 46</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>r = 2</td>
+                        <td>2, 7, 12, 17, 22, 27, 32, 37, 42, 47</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>r = 3</td>
+                        <td>3, 8, 13, 18, 23, 28, 33, 38, 43, 48</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>r = 4</td>
+                        <td>4, 9, 14, 19, 24, 29, 34, 39, 44, 49</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>r = 5</td>
+                        <td>5, 10, 15, 20, 25, 30, 35, 40, 45, 50</td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="result">
+                <strong>Resposta:</strong> As outras 4 amostras possíveis são aquelas correspondentes a r = 2, 3, 4 e 5.
+            </div>
+            
+            <p class="reference">
+                Referência: Aula 08, Slide 3 - Espaço Amostral da Amostragem Sistemática
+            </p>
+        </div>
+
+        <!-- Exercício 8.4 -->
+        <div class="section success">
+            <h3>Exercício 8.4: Comparação de Eficiência (AS vs AAS)</h3>
+            <p><strong>Enunciado:</strong> Tabela 8.5 mostra o número de sementes germinadas em 200 canteiros. 
+            Calcule a variância do estimador da média para AS e AAS (n=10).</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>Parâmetros:</strong></p>
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>N = 200 (tamanho da população)</li>
+                <li>n = 10 (tamanho da amostra)</li>
+                <li>K = 20 (intervalo de seleção)</li>
+                <li>a = 20 (número de amostras sistemáticas possíveis)</li>
+            </ul>
+            
+            <p><strong>a) Variância sob Amostragem Sistemática:</strong></p>
+            <div class="formula">
+                Var(ȳ_AS) = (1/a) × Σ(ȳ_r - Ȳ)²
+                <br>
+                Var(ȳ_AS) = 0.8949
+            </div>
+            
+            <p><strong>b) Variância sob Amostragem Aleatória Simples:</strong></p>
+            <div class="formula">
+                Var(ȳ_AAS) = (1 - n/N) × S² / n
+                <br>
+                Var(ȳ_AAS) = (1 - 10/200) × S² / 10
+                <br>
+                Var(ȳ_AAS) = 11.001
+            </div>
+            
+            <p><strong>c) Análise de Eficiência:</strong></p>
+            <div class="result">
+                <strong>EPA (Eficiência Relativa) = Var(AS) / Var(AAS) = 0.8949 / 11.001 = 0.0813</strong>
+                <br><br>
+                A Amostragem Sistemática é <strong>aproximadamente 12.3 vezes mais precisa</strong> que a AAS neste caso.
+                <br><br>
+                <strong>Conclusão:</strong> A AS é significativamente mais eficiente que a AAS. Isso ocorre porque 
+                a população foi ordenada de forma que as colunas da tabela criam uma estratificação implícita. 
+                A AS, ao selecionar uma unidade de cada coluna, garante que a variabilidade entre as colunas 
+                seja bem representada em cada amostra.
+            </div>
+            
+            <p class="reference">
+                Referência: Aula 09, Slide 2 - Variância do Estimador da Média na AS
+            </p>
+        </div>
+
+        <!-- Exercício 8.5 -->
+        <div class="section success">
+            <h3>Exercício 8.5: Ocupantes de Veículos (Intervalo de Confiança)</h3>
+            <p><strong>Enunciado:</strong> N=105, K=10, r=8. Dados: 3, 5, 7, 2, 3, 4, 5, 4, 4, 2. 
+            Estime a média e construa um IC 95%.</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>a) Plano Amostral:</strong></p>
+            <p>Amostragem Sistemática Simples com N=105, K=10, n=10</p>
+            
+            <p><strong>b) Veículos Selecionados (números de ordem):</strong></p>
+            <p style="text-align: center; font-weight: bold;">8, 18, 28, 38, 48, 58, 68, 78, 88, 98</p>
+            
+            <p><strong>c) Estimativa da Média:</strong></p>
+            <div class="formula">
+                ȳ = (3 + 5 + 7 + 2 + 3 + 4 + 5 + 4 + 4 + 2) / 10 = 3.9 ocupantes
+            </div>
+            
+            <p><strong>d) Intervalo de Confiança 95%:</strong></p>
+            <p>Suposição: População em ordem aleatória (Solução 1 - Aula 09, Slide 13)</p>
+            
+            <div class="formula">
+                V̂₁ᴬˢ = (1/n - 1/N) × s²
+                <br>
+                V̂₁ᴬˢ = (1/10 - 1/105) × 2.3222 = 0.2101
+                <br>
+                EP = √0.2101 = 0.4583
+                <br>
+                IC 95% = 3.9 ± 1.96 × 0.4583 = [3.002, 4.798]
+            </div>
+            
+            <div class="result">
+                <strong>Resposta:</strong> A média estimada é <strong>3.9 ocupantes</strong> por veículo, 
+                com intervalo de confiança de 95% sendo <strong>[3.002, 4.798]</strong>.
+            </div>
+            
+            <p class="reference">
+                Referência: Aula 09, Slide 13 - Estimador da Variância (Solução 1)
+            </p>
+        </div>
+
+        <!-- PÁGINA 2 -->
+        <div class="page-break"></div>
+
+        <!-- SEÇÃO 3: CÁLCULO DE TAMANHO DE AMOSTRA -->
+        <h2>3. Cálculo de Tamanho de Amostra</h2>
+
+        <!-- Questão 01 -->
+        <div class="section success">
+            <h3>Questão 01: Tamanho de Amostra para Proporções</h3>
+            <p><strong>Enunciado:</strong> De acordo com o US Bureau of Labor Statistics, 71% dos trabalhadores 
+            tinham acesso a planos de assistência médica. Calcule o tamanho de amostra para estimar essa proporção 
+            usando diferentes critérios de precisão.</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>a) Coeficiente de Variação (CV) = 10%:</strong></p>
+            <div class="formula">
+                n = (z² × (1-P)) / (CV² × P)
+                <br>
+                n = (1.96² × (1-0.71)) / (0.10² × 0.71)
+                <br>
+                n = (3.8416 × 0.29) / 0.0071 = 1,142
+            </div>
+            
+            <p><strong>b) Erro Padrão (EP) = 3 pontos percentuais = 0.03:</strong></p>
+            <div class="formula">
+                n = (P × (1-P)) / EP²
+                <br>
+                n = (0.71 × 0.29) / 0.03²
+                <br>
+                n = 0.2059 / 0.0009 = 229
+            </div>
+            
+            <p><strong>c) Margem de Erro (MOE) = 3 pontos percentuais = 0.03:</strong></p>
+            <div class="formula">
+                n = (z² × P × (1-P)) / MOE²
+                <br>
+                n = (1.96² × 0.71 × 0.29) / 0.03²
+                <br>
+                n = (3.8416 × 0.2059) / 0.0009 = 880
+            </div>
+            
+            <p><strong>d) Semi-larguras dos Intervalos de Confiança 95%:</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Critério</th>
+                        <th>Tamanho (n)</th>
+                        <th>Semi-largura (z × EP)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CV = 10%</td>
+                        <td>1,142</td>
+                        <td>0.0071 (0.71%)</td>
+                    </tr>
+                    <tr>
+                        <td>EP = 3%</td>
+                        <td>229</td>
+                        <td>0.0588 (5.88%)</td>
+                    </tr>
+                    <tr>
+                        <td>MOE = 3%</td>
+                        <td>880</td>
+                        <td>0.0300 (3.00%)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="result">
+                <strong>Conclusão:</strong> O tamanho de amostra varia significativamente conforme o critério de precisão escolhido. 
+                O CV resulta em maior tamanho amostral (n=1,142) porque é mais restritivo, enquanto o EP resulta no menor (n=229).
+            </div>
+        </div>
+
+        <!-- Questão 02 -->
+        <div class="section info">
+            <h3>Questão 02: Prevalência de Característica Rara</h3>
+            <p><strong>Enunciado:</strong> Um pesquisador deseja estimar a prevalência de uma característica rara 
+            (P=2%) com margem de erro (MOE) = 0.005.</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>a) Tamanho Amostral Necessário:</strong></p>
+            <div class="formula">
+                n = (z² × P × (1-P)) / MOE²
+                <br>
+                n = (1.96² × 0.02 × 0.98) / 0.005²
+                <br>
+                n = (3.8416 × 0.0196) / 0.000025
+                <br>
+                n = 3,006
+            </div>
+            
+            <p><strong>b) Análise de Sensibilidade:</strong></p>
+            <p>Como o pesquisador está incerto sobre a prevalência real, é recomendado calcular n para diferentes valores de P:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Proporção (P)</th>
+                        <th>Tamanho (n)</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>P = 0.01 (1%)</td>
+                        <td>1,530</td>
+                        <td>Menor que estimado</td>
+                    </tr>
+                    <tr>
+                        <td>P = 0.02 (2%)</td>
+                        <td>3,006</td>
+                        <td>Estimado pelo pesquisador</td>
+                    </tr>
+                    <tr>
+                        <td>P = 0.05 (5%)</td>
+                        <td>7,299</td>
+                        <td>Maior que estimado</td>
+                    </tr>
+                    <tr>
+                        <td>P = 0.50 (50%)</td>
+                        <td>153,664</td>
+                        <td>Pior caso (máxima variância)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="result">
+                <strong>Recomendação:</strong> Se o pesquisador está muito incerto, usar P=0.50 (pior caso) resultaria em n=153,664. 
+                Uma abordagem mais prática seria usar P=0.02 (n=3,006) ou realizar um estudo piloto para refinar a estimativa.
+            </div>
+        </div>
+
+        <!-- Questão 03 -->
+        <div class="section warning">
+            <h3>Questão 03: Detectar Mudança na Renda Média</h3>
+            <p><strong>Enunciado:</strong> A renda disponível média era $6,100 em 2002. Deseja-se detectar um aumento 
+            para $7,000 em 2010. Variância relativa unitária = 2.5, α = 0.05, poder = 0.80.</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>Parâmetros:</strong></p>
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>μ₀ = $6,100 (média em 2002)</li>
+                <li>μ₁ = $7,000 (média esperada em 2010)</li>
+                <li>Δμ = $900 (mudança a detectar)</li>
+                <li>Variância relativa unitária = 2.5</li>
+                <li>S = √(2.5 × 6,100²) = $9,681</li>
+                <li>α = 0.05 (nível de significância bilateral)</li>
+                <li>Poder = 0.80 (β = 0.20)</li>
+            </ul>
+            
+            <div class="formula">
+                z_α/2 = 1.96 (para α = 0.05 bilateral)
+                <br>
+                z_β = 0.84 (para poder = 0.80)
+                <br>
+                n = ((z_α/2 + z_β)² × S²) / (μ₁ - μ₀)²
+                <br>
+                n = ((1.96 + 0.84)² × 9,681²) / 900²
+                <br>
+                n = (7.84 × 93,722,761) / 810,000
+                <br>
+                n = 905
+            </div>
+            
+            <div class="result">
+                <strong>Resposta:</strong> Um tamanho de amostra de <strong>n = 905</strong> é necessário para detectar 
+                um aumento de $900 na renda média com 80% de poder e 5% de nível de significância.
+            </div>
+        </div>
+
+        <!-- Questão 04 -->
+        <div class="section danger">
+            <h3>Questão 04: Tamanho de Amostra para Estudo de Obesidade em Crianças</h3>
+            <p><strong>Enunciado:</strong> Determinar tamanho amostral para detectar mudanças no IMC de crianças 
+            (6-7 anos) com poder = 80% e α = 0.05.</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>a) Detectar aumento de 1.5% em IMC (μ₀ = 17.5):</strong></p>
+            <div class="formula">
+                μ₁ = 17.5 × 1.015 = 17.7625
+                <br>
+                Δμ = 0.2625
+                <br>
+                S = 0.70
+                <br>
+                n = ((1.96 + 0.84)² × 0.70²) / 0.2625²
+                <br>
+                n = (7.84 × 0.49) / 0.0689
+                <br>
+                n = 56
+            </div>
+            
+            <p><strong>b) Detectar aumento de 3.0% em IMC:</strong></p>
+            <div class="formula">
+                μ₁ = 17.5 × 1.03 = 18.025
+                <br>
+                Δμ = 0.525
+                <br>
+                n = ((1.96 + 0.84)² × 0.70²) / 0.525²
+                <br>
+                n = 3.84 × 0.49 / 0.2756
+                <br>
+                n = 14
+            </div>
+            
+            <p><strong>c) Detectar aumento de 0.5% em IMC:</strong></p>
+            <div class="formula">
+                μ₁ = 17.5 × 1.005 = 17.5875
+                <br>
+                Δμ = 0.0875
+                <br>
+                n = ((1.96 + 0.84)² × 0.70²) / 0.0875²
+                <br>
+                n = 3.84 × 0.49 / 0.00766
+                <br>
+                n = 246
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mudança Detectada</th>
+                        <th>Δμ (IMC)</th>
+                        <th>Tamanho (n)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.5%</td>
+                        <td>0.2625</td>
+                        <td>56</td>
+                    </tr>
+                    <tr>
+                        <td>3.0%</td>
+                        <td>0.525</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>0.5%</td>
+                        <td>0.0875</td>
+                        <td>246</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="result">
+                <strong>d) Comentário:</strong> Existe uma relação inversa entre o tamanho da mudança a detectar 
+                e o tamanho amostral necessário. Quanto menor a mudança que se deseja detectar, maior deve ser a amostra. 
+                Neste caso, detectar uma mudança de 0.5% requer 246 pessoas, enquanto detectar 3.0% requer apenas 14.
+            </div>
+        </div>
+
+        <!-- Questão 05 -->
+        <div class="section info">
+            <h3>Questão 05: Estudo Longitudinal com Atrito</h3>
+            <p><strong>Enunciado:</strong> Acompanhamento de desemprego em dois períodos. Taxa de desemprego T1 = 8%, 
+            esperada queda de 1.5 p.p. em T2. Cooperação esperada = 75%. Poder = 80%, α = 0.05 (unilateral).</p>
+            
+            <h4>Solução:</h4>
+            
+            <p><strong>a) Tamanho de Amostra Necessário:</strong></p>
+            
+            <p><strong>Parâmetros:</strong></p>
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>p₁ = 0.08 (taxa de desemprego em T1)</li>
+                <li>p₂ = 0.065 (taxa esperada em T2, queda de 1.5 p.p.)</li>
+                <li>Δp = 0.015 (mudança a detectar)</li>
+                <li>Teste unilateral: z_α = 1.645</li>
+                <li>Poder = 0.80: z_β = 0.84</li>
+                <li>Taxa de cooperação = 75%</li>
+            </ul>
+            
+            <div class="formula">
+                p̄ = (p₁ + p₂) / 2 = (0.08 + 0.065) / 2 = 0.0725
+                <br>
+                n = ((z_α + z_β)² × [p₁(1-p₁) + p₂(1-p₂)]) / Δp²
+                <br>
+                n = ((1.645 + 0.84)² × [0.08×0.92 + 0.065×0.935]) / 0.015²
+                <br>
+                n = (6.2001 × [0.0736 + 0.0608]) / 0.000225
+                <br>
+                n = (6.2001 × 0.1344) / 0.000225
+                <br>
+                n = 3,695
+            </div>
+            
+            <p><strong>Ajuste para Atrito:</strong></p>
+            <p>Como apenas 75% da amostra T1 cooperará em T2, é necessário aumentar a amostra inicial:</p>
+            <div class="formula">
+                n_ajustado = n / taxa_cooperação
+                <br>
+                n_ajustado = 3,695 / 0.75 = 4,927
+            </div>
+            
+            <div class="result">
+                <strong>Resposta (a):</strong> Tamanho de amostra necessário em T1 = <strong>4,927 pessoas</strong>. 
+                Esperando 75% de cooperação, teremos 3,695 pessoas em T2, suficientes para detectar a queda de 1.5 p.p. 
+                com 80% de poder.
+            </div>
+            
+            <p><strong>b) Poder com Amostra de 500 Pessoas:</strong></p>
+            <div class="formula">
+                Com n = 500 (T1) e 75% de cooperação = 375 (T2)
+                <br>
+                z_calc = (√375 × 0.015 - 1.645 × √[0.0725×0.9275]) / √[0.08×0.92 + 0.065×0.935]
+                <br>
+                z_calc = (19.36 × 0.015 - 1.645 × 0.2596) / 0.3668
+                <br>
+                z_calc = (0.2904 - 0.4270) / 0.3668 = -0.373
+                <br>
+                Poder = Φ(-0.373) ≈ 0.35 (35%)
+            </div>
+            
+            <div class="result">
+                <strong>Resposta (b):</strong> Com uma amostra de 500 pessoas, o poder para detectar uma mudança 
+                de 1.5 p.p. é apenas <strong>35%</strong>, muito abaixo do desejado (80%). 
+                Portanto, a amostra de 500 é insuficiente para este estudo.
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: CONCLUSÃO -->
+        <h2>4. Conclusão</h2>
+        <p>
+            Este relatório apresentou as resoluções completas dos exercícios de Amostragem Sistemática (Seção 8) 
+            e Cálculo de Tamanho de Amostra, integrando a teoria estatística com aplicações práticas.
+        </p>
+        <p>
+            Os resultados demonstram que:
+        </p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li>A Amostragem Sistemática pode ser significativamente mais eficiente que a AAS quando a população 
+            possui uma ordenação favorável;</li>
+            <li>O tamanho de amostra varia substancialmente conforme o critério de precisão escolhido;</li>
+            <li>A relação entre tamanho de mudança a detectar e tamanho amostral é inversa;</li>
+            <li>Estudos longitudinais com atrito requerem amostras maiores para compensar a perda de respondentes.</li>
+        </ul>
+
+        <!-- RODAPÉ -->
+        <footer>
+            <hr>
+            <p>Relatório gerado em 01 de Março de 2026</p>
+            <p>Disciplina: 1108202 - AMOSTRAGEM I | Professor: Hemílio Fernandes Campos Coêlho</p>
+            <p>UFPB - Centro de Ciências Exatas e da Natureza</p>
+        </footer>
+    </div>
+</body>
+</html>
